@@ -115,7 +115,11 @@ else
 	if [ ! -d "$(ELECTIONGUARD_BUILD_DIR)/web" ]; then mkdir $(ELECTIONGUARD_BINDING_TEST_DIR)/web; fi
 	cp src/web/index.html build/web/
 endif
-	emcc -Iinclude -Isrc/karamel src/electionguard/js_entrypoint.cpp -o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_cpp_to_wasm_add -sEXPORTED_RUNTIME_METHODS=ccall
+	emcc -Iinclude -Isrc/karamel -Isrc/electionguard -D USE_STANDARD_PRIMES \
+		src/electionguard/js_entrypoint.cpp \
+		src/electionguard/facades/Hacl_Bignum256.cpp \
+		src/karamel/Hacl_Bignum256.c \
+		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_cpp_to_wasm_add -sEXPORTED_RUNTIME_METHODS=ccall
 
 run-wasm:
 	emrun --port 8080 ./build/web
