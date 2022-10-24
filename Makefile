@@ -107,6 +107,19 @@ else
 	echo "MSVC builds are only supported on Windows"
 endif
 
+build-wasm:
+ifeq ($(OPERATING_SYSTEM),Windows)
+	pwsh -Command "New-Item -ItemType Directory -Force -Path $(ELECTIONGUARD_BUILD_DIR)/web | Out-Null; $$null"
+	pwsh -Command "Copy-Item src/web/index.html -Destination $(ELECTIONGUARD_BUILD_DIR)/web | Out-Null; $$null"
+else
+	if [ ! -d "$(ELECTIONGUARD_BUILD_DIR)/web" ]; then mkdir $(ELECTIONGUARD_BINDING_TEST_DIR)/web; fi
+	cp src/web/index.html build/web/
+endif
+	emcc -Iinclude -Isrc/karamel src/electionguard/js_entrypoint.cpp -o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_cpp_to_wasm_add -sEXPORTED_RUNTIME_METHODS=ccall
+
+run-wasm:
+	emrun --port 8080 ./build/web
+
 build-android:
 	@echo 🤖 BUILD ANDROID
 	cmake -S . -B $(ELECTIONGUARD_BUILD_LIBS_DIR)/android/$(TARGET)/arm64-v8a \

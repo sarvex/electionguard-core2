@@ -1,0 +1,21 @@
+<html>
+  <body>
+    <script src="eg.js"></script>
+    <script>
+      Module.onRuntimeInitialized = () => {
+        const a = 2;
+        const b = 2;
+        var result = Module.ccall(
+          "cpp_to_wasm_add",
+          "number",
+          ["number", "number"],
+          [BigInt(a), BigInt(b)]
+        );
+        console.log(result);
+
+        document.getElementById("result").innerHTML = `${a} + ${b} = ${result}`;
+      };
+    </script>
+    <h1 id="result"></h1>
+  </body>
+</html>
