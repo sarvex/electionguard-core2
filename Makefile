@@ -118,17 +118,25 @@ endif
 	emcc -Iinclude -Isrc/karamel -Isrc/electionguard \
 		-I.cache/CPM/nlohmann_json/3cc46c5b3b30780707857320f5d2655b293c4330/single_include \
 		-I.cache/CPM/spdlog/cced5c35ec43466bb67ce80a52ac7dff03377357/include \
+		-I.cache/CPM/date/ab0ca690a102a8235aa5cbfb92d9930dcff23717/include \
 		-sLLD_REPORT_UNDEFINED \
 		-D USE_STANDARD_PRIMES \
 		src/electionguard/js_entrypoint.cpp \
 		src/electionguard/election.cpp \
 		src/electionguard/group.cpp \
 		src/electionguard/facades/Hacl_Bignum256.cpp \
+		src/karamel/Hacl_Bignum.c \
 		src/karamel/Hacl_Bignum256.c \
 		src/karamel/Lib_Memzero0.c \
 		src/electionguard/facades/Hacl_Bignum4096.cpp \
 		src/electionguard/log.cpp \
 		src/karamel/Hacl_Bignum4096.c \
+		src/electionguard/manifest.cpp \
+		src/electionguard/hash.cpp \
+		src/electionguard/convert.cpp \
+		src/karamel/Hacl_Streaming_SHA2.c \
+		src/karamel/Hacl_Hash.c \
+		src/electionguard/facades/election.cpp \
 		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall
 
 run-wasm:
