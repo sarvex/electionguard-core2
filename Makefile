@@ -115,11 +115,21 @@ else
 	if [ ! -d "$(ELECTIONGUARD_BUILD_DIR)/web" ]; then mkdir $(ELECTIONGUARD_BINDING_TEST_DIR)/web; fi
 	cp src/web/index.html build/web/
 endif
-	emcc -Iinclude -Isrc/karamel -Isrc/electionguard -D USE_STANDARD_PRIMES \
+	emcc -Iinclude -Isrc/karamel -Isrc/electionguard \
+		-I.cache/CPM/nlohmann_json/3cc46c5b3b30780707857320f5d2655b293c4330/single_include \
+		-I.cache/CPM/spdlog/cced5c35ec43466bb67ce80a52ac7dff03377357/include \
+		-sLLD_REPORT_UNDEFINED \
+		-D USE_STANDARD_PRIMES \
 		src/electionguard/js_entrypoint.cpp \
+		src/electionguard/election.cpp \
+		src/electionguard/group.cpp \
 		src/electionguard/facades/Hacl_Bignum256.cpp \
 		src/karamel/Hacl_Bignum256.c \
-		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_cpp_to_wasm_add -sEXPORTED_RUNTIME_METHODS=ccall
+		src/karamel/Lib_Memzero0.c \
+		src/electionguard/facades/Hacl_Bignum4096.cpp \
+		src/electionguard/log.cpp \
+		src/karamel/Hacl_Bignum4096.c \
+		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall
 
 run-wasm:
 	emrun --port 8080 ./build/web
