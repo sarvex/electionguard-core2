@@ -137,6 +137,7 @@ endif
 		src/karamel/Hacl_Streaming_SHA2.c \
 		src/karamel/Hacl_Hash.c \
 		src/electionguard/facades/election.cpp \
+		src/electionguard/encrypt.cpp \
 		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall
 
 run-wasm:
