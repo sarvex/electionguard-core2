@@ -5,31 +5,42 @@
 #include "electionguard/election.h"
 #include "electionguard/encrypt.hpp"
 #include "electionguard/encrypt.h"
+#include "electionguard/ballot.hpp"
+#include "electionguard/ballot.h"
 
+using std::string;
 using electionguard::CiphertextElectionContext;
 using electionguard::Manifest;
 using electionguard::EncryptionDevice;
+using electionguard::EncryptionMediator;
+using electionguard::PlaintextBallot;
 
 // todo: try char * to remove warning?
 const char *js_encrypt(const char *context, const char *manifest, const char *ballot)
 {
     // get context
-    auto context_obj = CiphertextElectionContext::fromJson(std::string(context));
+    auto context_obj = CiphertextElectionContext::fromJson(string(context));
     // get manifest 
-    auto manifest_obj = Manifest::fromJson(std::string(manifest));
-    // make ballot - eg_encryption_device_new
+    auto manifest_obj = Manifest::fromJson(string(manifest));
+    // make device
     auto device = make_unique<EncryptionDevice>(12345UL, 23456UL, 34567UL, "Location");
-    // make encryption mediator - eg_encryption_mediator_new
-    // make a plaintext ballot - eg_plaintext_ballot_from_json
-    // encrypt - eg_encryption_mediator_encrypt_ballot
-    // convert to json - eg_ciphertext_ballot_to_json
+    // make encryption mediator
+    auto mediator = make_unique<EncryptionMediator>(*manifest_obj, *context_obj, *device);
+    // make ballot
+    auto ballot_obj = PlaintextBallot::fromJson(string(ballot));
+    // encrypt
+    auto ciphertext = mediator->encrypt(*ballot_obj);
+    // convert to json
+    auto json = ciphertext->toJson(false);
 
-    delete AS_TYPE(eg_ciphertext_election_context_t, manifest_obj.release());
-    delete AS_TYPE(eg_context_configuration_t, context_obj.release());
+    delete AS_TYPE(eg_ciphertext_election_context_t, context_obj.release());
+    // or maybe: delete AS_TYPE(eg_context_configuration_t, context_obj.release());
+
+    delete AS_TYPE(eg_election_manifest_t, manifest_obj.release());
     delete AS_TYPE(eg_encryption_device_t, device.release());
+    delete AS_TYPE(eg_encryption_mediator_t, mediator.release());
+    delete AS_TYPE(eg_plaintext_ballot_t, ballot_obj.release());
 
-    std::string intermediate = "hello world";
-    auto result = intermediate.c_str();
-    // std::string intermediate = std::string(ballot);
+    auto result = json.c_str();
     return result;
 }

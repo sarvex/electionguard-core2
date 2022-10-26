@@ -120,7 +120,7 @@ endif
 		-I.cache/CPM/spdlog/cced5c35ec43466bb67ce80a52ac7dff03377357/include \
 		-I.cache/CPM/date/ab0ca690a102a8235aa5cbfb92d9930dcff23717/include \
 		-sLLD_REPORT_UNDEFINED \
-		-D USE_STANDARD_PRIMES \
+		-D USE_STANDARD_PRIMES -D _WASM \
 		src/electionguard/js_entrypoint.cpp \
 		src/electionguard/election.cpp \
 		src/electionguard/group.cpp \
@@ -138,6 +138,18 @@ endif
 		src/karamel/Hacl_Hash.c \
 		src/electionguard/facades/election.cpp \
 		src/electionguard/encrypt.cpp \
+		src/electionguard/ballot.cpp \
+		src/electionguard/ballot_code.cpp \
+		src/electionguard/nonces.cpp \
+		src/electionguard/precompute_buffers.cpp \
+		src/electionguard/elgamal.cpp \
+		src/karamel/Hacl_HMAC_DRBG.c \
+		src/karamel/Lib_RandomBuffer_System.c \
+		src/karamel/Hacl_GenericField32.c \
+		src/karamel/Hacl_GenericField64.c \
+		src/electionguard/chaum_pedersen.cpp \
+		src/electionguard/hmac.cpp \
+		src/karamel/Hacl_HMAC.c \
 		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall
 
 run-wasm:
