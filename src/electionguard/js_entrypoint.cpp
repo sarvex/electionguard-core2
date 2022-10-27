@@ -38,7 +38,7 @@ const char *js_encrypt(const char *context, const char *manifest, const char *ba
     // make ballot
     auto ballot_obj = PlaintextBallot::fromJson(string(ballot));
     // encrypt
-    auto ciphertext = mediator->encrypt(*ballot_obj);
+    auto ciphertext = mediator->encrypt(*ballot_obj, false);
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end-start;
     std::time_t end_time = std::chrono::system_clock::to_time_t(end);
