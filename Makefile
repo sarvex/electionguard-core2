@@ -119,7 +119,6 @@ endif
 		-I.cache/CPM/nlohmann_json/3cc46c5b3b30780707857320f5d2655b293c4330/single_include \
 		-I.cache/CPM/spdlog/cced5c35ec43466bb67ce80a52ac7dff03377357/include \
 		-I.cache/CPM/date/ab0ca690a102a8235aa5cbfb92d9930dcff23717/include \
-		-sLLD_REPORT_UNDEFINED \
 		-D USE_STANDARD_PRIMES -D _WASM \
 		src/electionguard/js_entrypoint.cpp \
 		src/electionguard/election.cpp \
@@ -150,7 +149,8 @@ endif
 		src/electionguard/chaum_pedersen.cpp \
 		src/electionguard/hmac.cpp \
 		src/karamel/Hacl_HMAC.c \
-		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall --emrun \
+		-o build/web/eg.js -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall --emrun \
+		-O3 \
 		-sINITIAL_MEMORY=33554432
 
 run-wasm:
