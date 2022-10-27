@@ -150,7 +150,8 @@ endif
 		src/electionguard/chaum_pedersen.cpp \
 		src/electionguard/hmac.cpp \
 		src/karamel/Hacl_HMAC.c \
-		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall
+		-o build/web/eg.js -sWASM_BIGINT -sEXPORTED_FUNCTIONS=_js_encrypt -sEXPORTED_RUNTIME_METHODS=ccall --emrun \
+		-sINITIAL_MEMORY=33554432
 
 run-wasm:
 	emrun --port 8080 ./build/web
